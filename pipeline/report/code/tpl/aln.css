@@ -1,0 +1,26 @@
+
+.alg{overflow-x:auto;border:1px solid var(--line);border-radius:8px;padding:6px 0;margin:4px 0 14px;background:var(--surface)}
+.alrow{display:flex;white-space:nowrap;align-items:center;min-width:max-content}
+.allab{position:sticky;left:0;z-index:2;background:var(--surface);width:430px;flex:none;padding:0 8px;font-size:12px;overflow:hidden}
+.lc{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:middle;font-size:11px;color:var(--ink-2)}
+.lc.id{width:108px;color:var(--ink)} .lc.va{width:106px} .lc.ja{width:52px} .lc.vb{width:62px} .lc.jb{width:56px}
+.ac.sg{text-align:left;font-size:10px;color:var(--ink-2);font-weight:600}
+.ac{display:inline-block;flex:none;width:14px;height:18px;line-height:18px;margin-right:1px;text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;border-radius:2px}
+.ac.hd{color:var(--ink-3);font-size:9px;overflow:visible}
+.alarc .ac{width:11px;font-size:10px;margin-right:1px} .alarc .ac.hd{font-size:8px}
+.ac.rg{text-align:left;font-size:10px;color:var(--ink-2)}
+.ac.rg.cdr{color:var(--ink);font-weight:600}
+.alsep{display:inline-block;flex:none;width:12px}
+.alrow.alh{height:16px}
+h2{scroll-margin-top:72px}
+.subnav{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 6px}
+.subnav a{font-size:13px;padding:4px 10px;border:1px solid var(--line);border-radius:14px;color:var(--ink-2);text-decoration:none}
+.subnav a.on{background:var(--accent-bg);color:var(--accent);border-color:var(--accent)}
+ul.plain{max-width:92ch;padding-left:20px} ul.plain li{margin:6px 0}
+dl.gl{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:4px 14px;margin:0} dl.gl dt{font-weight:600} dl.gl dd{margin:0}
+.xb{display:grid;grid-template-columns:minmax(110px,190px) 1fr 44px;gap:8px;align-items:center;margin:6px 0;font-size:13px;max-width:820px}
+.xbt{position:relative;height:18px;background:var(--surface-2);border-radius:3px}
+.xbn{position:absolute;left:0;top:0;bottom:0;background:var(--cellbg);border-right:2px dashed var(--ink-2);border-radius:3px 0 0 3px}
+.xbv{position:absolute;left:0;top:4px;bottom:4px;background:var(--accent);border-radius:2px}
+.xbx{font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:700px){dl.gl{grid-template-columns:1fr} dl.gl dd{margin-bottom:6px}}

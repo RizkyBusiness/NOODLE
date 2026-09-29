@@ -1,0 +1,16 @@
+# Optional hinge module (stages vxh0, vxh1): STCRpy reference TCR angles. ANARCI needs its germline data (~/.anarci).
+name: stcrpy
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - stcrpy==1.0.6
+      - anarci-mhc==0.0.16
+      - numpy==1.26.4
+      - pandas==2.3.3
+      - scipy==1.15.3
+      - scikit-learn==1.7.2
+      - biopython==1.88
+      - matplotlib==3.10.9

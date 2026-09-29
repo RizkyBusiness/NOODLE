@@ -1,0 +1,11 @@
+# Upstream environment: structure features, vector method, report tables (stages D, V, R except expr2_genefiles, which runs in sc-gex; also fetch_geo and the stage C
+# table scripts c1b2, c1b3, c1w, derive_helpers, c1z). Same versions as the shell that ran the reference steps.
+name: analysis
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10.12
+  - numpy=2.2.6
+  - scipy=1.15.3
+  - pandas=2.3.3
+  - h5py=3.16.0

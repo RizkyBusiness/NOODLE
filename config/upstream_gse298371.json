@@ -1,0 +1,110 @@
+{
+  "_comment": "Upstream worked example: GSE298371 (mouse small-intestine CD4, SPF vs germ-free). Keys from 'dataset' down are read by the original config-driven scripts (stages A-C, via imgt.load()); relative paths in them are relative to the run folder (the write root). 'pipeline' is read by scripts/run_upstream.py. Roots, environments and prefix aliases come from the voxel config (blocks 'upstream' and 'envs').",
+  "pipeline": {
+    "fold_target": 1000000000,
+    "primary_arm": "vc_ori_w050",
+    "variant_arms": [
+      "vc_ori",
+      "vc",
+      "vg",
+      "vs"
+    ]
+  },
+  "dataset": "GSE298371 mouse small-intestine CD4 (T-bet-ZsGreen, SPF vs germ-free)",
+  "species": "mouse",
+  "locus_pair": "AB",
+  "mhc_class": "II",
+  "deposit_dir": "raw/prepared_main",
+  "out_dir": "tables",
+  "cell_col": "cell",
+  "donor_col": "mouse",
+  "batch_col": "lane",
+  "library_col": "lane",
+  "vdj": {
+    "require_productive": true,
+    "require_full_length": true,
+    "require_high_confidence": true,
+    "min_umis": 1,
+    "max_chains_per_cell": 1
+  },
+  "folding": {
+    "builder": "TCRBuilder2",
+    "weights_dir": "weights/tcr",
+    "n_shards": 5,
+    "threads": 2,
+    "model_dir": "structures"
+  },
+  "benchmark": {
+    "percentile": 95,
+    "max_structures": 40,
+    "max_resolution": 3.0,
+    "min_threshold": 0.75
+  },
+  "clustering": {
+    "linkage": "complete",
+    "min_cluster_size": 2,
+    "n_boot": 20,
+    "boot_frac": 0.8,
+    "n_resample": 10
+  },
+  "transcriptome": {
+    "sources": [
+      {
+        "name": "gex",
+        "path": "raw/gex_main.h5ad",
+        "kind": "h5ad",
+        "lib_map": "raw/gex_lane_map.csv"
+      }
+    ],
+    "min_genes": 500,
+    "max_pct_mito": 5,
+    "min_cells_per_gene": 3,
+    "n_hvg": 2000,
+    "n_pcs": 40,
+    "k": 15,
+    "resolution": 0.4,
+    "perplexity": 30,
+    "integrate": "harmony",
+    "reference_labels": null,
+    "exclude_gene_patterns": [
+      "^TR[ABGD][VDJC]",
+      "^IG[HKL][VDJC]"
+    ]
+  },
+  "controls": {
+    "n_perm": 5000,
+    "n_tiebreak": 200,
+    "seed": 0,
+    "budgets": [
+      30,
+      100,
+      300,
+      1000,
+      3000,
+      10000
+    ]
+  },
+  "_project_notes": {
+    "donor_col": "mouse identity recovered from hashtags; the deposited donor column is the literal 'pool' on every contig and carries no identity",
+    "library_col": "lane, from the aggr barcode suffix -1..-8; mouse and lane are crossed, so both are usable batch variables",
+    "folding": "n_shards=5 x threads=2 measured fastest on this 10-core machine (6.2 s/receptor aggregate vs 6.9 for 9x1)",
+    "deposit_dir": "prepared by code/b1_prepare_deposit.py: HTO singlets passing GEX QC, iNKT/MAIT V-J usage removed, dual-chain cells removed",
+    "max_chains_per_cell": "declared by the pipeline schema but build_vdomains.py never reads it; dual-chain exclusion is applied in the prepared deposit instead"
+  },
+  "deposit": {
+    "_comment": "the 10x deposit files read by stages A-C (paths.deposit)",
+    "dir": "raw/GSE298371",
+    "contigs": "GSE298371_filtered_contig_annotations.csv.gz",
+    "hto_features": "GSE298371_HTO_features.csv.gz",
+    "matrix": "GSE298371_filtered_feature_bc_matrix.h5"
+  },
+  "conditions": [
+    "SPF",
+    "GF"
+  ],
+  "hashtag_names": {
+    "_comment": "a3_hto_demux.py: the condition of a cell comes from its hashtag's sample name (the name column of the HTO feature file, else the matrix feature name; this name is also the mouse id): the name is split at separator and part number condition_field (0 = the first) is the condition. No default: a data set without this block stops. Here GF_M_rep1 -> GF.",
+    "separator": "_",
+    "condition_field": 0
+  }
+}

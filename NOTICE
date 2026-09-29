@@ -1,0 +1,31 @@
+NOODLE — third-party components and data
+
+The code in this package is under the MIT licence (LICENSE). The package contains code only. It does not include any
+data set, structure prediction, model weights or analysis results.
+
+Shipped with the package:
+- 3Dmol.js 2.5.5 — BSD-3-Clause, David Koes and contributors; inlined in pipeline/report/template/report_template.html
+  and therefore in every built report. Licence texts: licenses/3Dmol_LICENSE_BSD3.txt (3Dmol.js and the GLmol,
+  Three.js and jQuery code it incorporates) and licenses/3Dmol_LICENSE.txt (the banner of the minified file).
+  Rego N, Koes D. 3Dmol.js: molecular visualization with WebGL. Bioinformatics 2015;31:1322-4.
+
+Used but not redistributed (install them yourself, e.g. from environments/*.yml; their own licences apply):
+- ImmuneBuilder / TCRBuilder2+ (BSD-3-Clause) — structure prediction. pipeline/code/ib_patches.py patches two runtime
+  issues in ImmuneBuilder 1.x by replacing two short source lines at run time; ImmuneBuilder itself is not modified or
+  copied. Abanades B, et al. Commun Biol 2023;6:575.
+- TCRBuilder2+ model weights — fetched by pipeline/code/fetch_weights.py through ImmuneBuilder from the URLs defined in
+  the installed ImmuneBuilder release; not redistributed. Checking their terms of use is the user's responsibility.
+- ANARCI (BSD-3-Clause) — IMGT numbering; HMMER (hmmscan), which ANARCI calls.
+- OpenMM and pdbfixer — refinement of the predicted models.
+- scanpy, anndata, harmonypy, leidenalg, umap-learn (with python-igraph and scikit-learn) — cells, states, UMAP.
+- tcrdist3 (MIT) and pwseqdist, with parasail — sequence cross-check.
+- STCRpy — optional Vα/Vβ hinge module.
+- numpy, scipy, pandas, Biopython, h5py, freesasa, matplotlib, PyTorch.
+
+Data:
+- GEO GSE298371 (Ansaldo E, et al. PNAS 2026;123(2):e2520747122) is not included; pipeline/code/fetch_geo.py downloads
+  the three supplementary files the package reads from GEO. Crystal structures for the benchmark are downloaded from the
+  RCSB PDB at run time. Their terms of use apply.
+
+Methods reimplemented here follow published work; see references/method.md and references/upstream.md for the citation
+lists. Reimplementation does not imply endorsement by those authors.

@@ -1,0 +1,89 @@
+[
+ {
+  "id": "a30_1_features_N10",
+  "env": "tcr-fold",
+  "script": "a30_1_features.py",
+  "args": [
+   "10"
+  ]
+ },
+ {
+  "id": "a30_1_features_N30",
+  "env": "tcr-fold",
+  "script": "a30_1_features.py",
+  "args": [
+   "30"
+  ]
+ },
+ {
+  "id": "a30_2_weight_N10",
+  "env": "tcr-fold",
+  "script": "a30_2_weight.py",
+  "args": [
+   "10"
+  ]
+ },
+ {
+  "id": "arcn3_sidechain_modes",
+  "env": "analysis",
+  "script": "arcn3_sidechain_modes.py",
+  "args": [
+   "dstdir:reference/arc30/work/arcn3_feat"
+  ],
+  "note": "reference for gate G3 in a30_2 N=30; float64 columns reproduce to ~1e-15, not bit for bit, across machines"
+ },
+ {
+  "id": "a30_2_weight_N30",
+  "env": "tcr-fold",
+  "script": "a30_2_weight.py",
+  "args": [
+   "30"
+  ]
+ },
+ {
+  "id": "a30_3_gate_G4_N10",
+  "env": "tcr-fold",
+  "script": "a30_3_cluster_tests.py",
+  "args": [
+   "src:descriptors/out/D3_property_descriptor.npz",
+   "src:reference/arc30/out/A1_features_N10.npz",
+   "src:tables",
+   "dstdir:reference/arc30/checks/G4",
+   "vc_ori_w050"
+  ]
+ },
+ {
+  "id": "a30_g4_check",
+  "env": "tcr-fold",
+  "script": "a30_g4_check.py",
+  "args": []
+ },
+ {
+  "id": "a30_3_state_tests_N30",
+  "env": "tcr-fold",
+  "script": "a30_3_cluster_tests.py",
+  "args": [
+   "src:reference/arc30/out/A1_property_descriptor_N30.npz",
+   "src:reference/arc30/out/A1_features_N30.npz",
+   "src:tables",
+   "dstdir:reference/arc30/out",
+   "a30_vc_ori_w050",
+   "a30_vc_ori",
+   "a30_vc",
+   "a30_vg",
+   "a30_vs"
+  ]
+ },
+ {
+  "id": "a30_5_compare",
+  "env": "tcr-fold",
+  "script": "a30_5_compare.py",
+  "args": []
+ },
+ {
+  "id": "a30_6_selfreview",
+  "env": "tcr-fold",
+  "script": "a30_6_selfreview.py",
+  "args": []
+ }
+]

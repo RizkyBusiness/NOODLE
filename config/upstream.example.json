@@ -1,0 +1,117 @@
+{
+  "_comment": "Upstream data-set config: every key, with a _comment_<key> note. Keys from 'dataset' down are read by the original config-driven scripts through imgt.load() (merged over the defaults in pipeline/code/imgt.py); 'pipeline' is read by scripts/run_upstream.py. Relative paths in dataset keys are relative to the run folder (the write root). Roots, environments and prefix aliases come from the voxel config (blocks 'upstream' and 'envs'); point upstream.dataset_config there at your copy of this file.",
+  "pipeline": {
+    "_comment": "fold_target: cumulative number of receptors b2_fold_batch folds (capped at the folding set); primary_arm: the vector-method variant run by the vec2_primary_w050 step (vc_ori_w050 = per-chain frames + orientation at weight 0.50, the weight chosen by vec6); variant_arms: sensitivity variants run by vec2_cluster_tests.",
+    "fold_target": 1000000000,
+    "primary_arm": "vc_ori_w050",
+    "variant_arms": [
+      "vc_ori",
+      "vc",
+      "vg",
+      "vs"
+    ]
+  },
+  "dataset": "my cohort",
+  "_comment_dataset": "free text, recorded in outputs",
+  "species": "mouse",
+  "_comment_species": "any species in anarci.germlines (tested: mouse only)",
+  "locus_pair": "AB",
+  "_comment_locus_pair": "AB (alpha/beta) or GD; chain labels and column names follow it (tested: AB only)",
+  "mhc_class": "II",
+  "_comment_mhc_class": "I | II | unspecified; interpretation only",
+  "deposit_dir": "raw/prepared_main",
+  "_comment_deposit_dir": "prepared VDJ deposit (written by b1_prepare_deposit.py)",
+  "out_dir": "tables",
+  "_comment_out_dir": "stage B/C output folder; the vector-method scripts expect tables",
+  "cell_col": "cell",
+  "donor_col": "mouse",
+  "batch_col": "lane",
+  "library_col": "lane",
+  "_comment_columns": "cell / donor / batch / library column names in the prepared tables",
+  "vdj": {
+    "require_productive": true,
+    "require_full_length": true,
+    "require_high_confidence": true,
+    "min_umis": 1,
+    "max_chains_per_cell": 1,
+    "_comment": "contig filters; max_chains_per_cell is declared but not read by build_vdomains.py (dual-chain cells are removed in b1_prepare_deposit.py)"
+  },
+  "folding": {
+    "builder": "TCRBuilder2",
+    "weights_dir": "weights/tcr",
+    "n_shards": 5,
+    "threads": 2,
+    "model_dir": "structures",
+    "_comment": "TCRBuilder2 (ImmuneBuilder) + OpenMM refinement; n_shards processes x threads each"
+  },
+  "benchmark": {
+    "percentile": 95,
+    "max_structures": 40,
+    "max_resolution": 3.0,
+    "min_threshold": 0.75,
+    "_comment": "crystal benchmark (b3b/b3h/b3i): resolution cut and the percentile used for the model-error threshold"
+  },
+  "clustering": {
+    "linkage": "complete",
+    "min_cluster_size": 2,
+    "n_boot": 20,
+    "boot_frac": 0.8,
+    "n_resample": 10,
+    "_comment": "combining-site extraction / earlier-skill clustering settings (n_resample = points per loop in the site descriptor)"
+  },
+  "transcriptome": {
+    "sources": [
+      {
+        "name": "gex",
+        "path": "raw/gex_main.h5ad",
+        "kind": "h5ad",
+        "lib_map": "raw/gex_lane_map.csv"
+      }
+    ],
+    "min_genes": 500,
+    "max_pct_mito": 5,
+    "min_cells_per_gene": 3,
+    "n_hvg": 2000,
+    "n_pcs": 40,
+    "k": 15,
+    "resolution": 0.4,
+    "perplexity": 30,
+    "integrate": "harmony",
+    "reference_labels": null,
+    "exclude_gene_patterns": [
+      "^TR[ABGD][VDJC]",
+      "^IG[HKL][VDJC]"
+    ],
+    "_comment": "transcriptome_map.py + c1b: QC, HVGs, PCA, Harmony, Leiden; receptor genes are excluded from the variable-gene pool"
+  },
+  "controls": {
+    "n_perm": 5000,
+    "n_tiebreak": 200,
+    "seed": 0,
+    "budgets": [
+      30,
+      100,
+      300,
+      1000,
+      3000,
+      10000
+    ],
+    "_comment": "earlier-skill permutation settings; the vector method's own null ladder (200 permutations, default_rng(0)) is fixed in vec2_cluster_tests.py"
+  },
+  "deposit": {
+    "_comment": "the 10x deposit files read by stages A-C (paths.deposit)",
+    "dir": "raw/<accession>",
+    "contigs": "<filtered_contig_annotations>.csv.gz",
+    "hto_features": "<HTO feature names>.csv.gz",
+    "matrix": "<filtered_feature_bc_matrix>.h5"
+  },
+  "conditions": [
+    "<condition 1>",
+    "<condition 2>"
+  ],
+  "hashtag_names": {
+    "_comment": "a3_hto_demux.py: the condition of a cell comes from its hashtag's sample name (the name column of the HTO feature file, else the matrix feature name; this name is also the mouse id): the name is split at separator and part number condition_field (0 = the first) is the condition. No default: a data set without this block stops.",
+    "separator": "<separator, e.g. _>",
+    "condition_field": "<0-based part index, e.g. 0>"
+  }
+}

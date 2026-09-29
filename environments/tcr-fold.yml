@@ -1,0 +1,23 @@
+# Upstream environment: folding, IMGT numbering, crystal benchmark (stages 0 fetch_weights, B, Bc).
+# Versions of the environment that ran the original analysis (Sep 2026).
+# freesasa and matplotlib are imported by site_geometry.py / benchmark_threshold.py.
+name: tcr-fold
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11.16
+  - numpy=2.3.5
+  - scipy=1.17.1
+  - pandas=3.0.5
+  - biopython=1.88
+  - openmm=8.6.0
+  - pdbfixer=1.12
+  - hmmer=3.4
+  - anarci=2024.05.21
+  - freesasa=2.2.1
+  - matplotlib-base=3.11.1
+  - pip
+  - pip:
+      - torch==2.13.0          # CPU build
+      - ImmuneBuilder==1.2

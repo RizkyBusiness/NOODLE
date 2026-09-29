@@ -1,0 +1,27 @@
+
+// ---------- METHODS (s15 report: what A14 changes; everything else is the first report's method)
+function viewMethods(app) {
+  const S = D.s15, ck = S.checks, tot = Object.values(ck).reduce((s, v) => s + v.n, 0);
+  sec(app, `<h1>Methods — σ 1.5 Å arms (A14)</h1>
+  <div class="warnbox"><b>One parameter changes.</b> Arms D and E are Arms B and C with the Gaussian blur of every atom reduced from σ 2.0 to <b>σ 1.5 Å</b>. The full method (frame, boxes, chemistry channels, distance, threshold rule, clustering, state test) is described in the first report (<span class="mono">voxel_report.html</span>, Methods) and is unchanged.</div>
+  <h2>1 · The grid</h2><ul>
+   <li>Each heavy atom is an isotropic Gaussian of width σ = 1.5 Å, point-sampled at the centres of 1.0 Å voxels, truncated at 3σ = 4.5 Å per axis (inside the boxes' 7 Å margins), each 1-D factor renormalised so every atom deposits exactly its channel mass. Channels as before: occupancy, hydrophobic, aromatic, H-bond donor, H-bond acceptor, positive, negative (typing A2/A3; the voxelised pharmacophore channels follow Jiménez et al. 2017, DeepSite).</li>
+   <li><b>Why 1.5 and not smaller:</b> with 1 Å voxels, σ/h = 1.5 still samples the Gaussian adequately; an atom-sized density (σ ≈ 0.85 Å, the width of Gaussian shape overlays such as Grant & Pickup 1996, and close to the atom densities of gnina, Ragoza et al. 2017) would need 0.5 Å voxels, eight times the grid — not run. Check of the sampling: the grid distance agrees with the exact grid-free (analytic) distance to ${esc(S.analytic.D)} (Arm D) and ${esc(S.analytic.E)} (Arm E) on 12 random pairs, against ${esc(S.analytic_ref.B)} and ${esc(S.analytic_ref.C)} at σ 2.0 (pre-set limit 2 %).</li>
+   <li><b>Arm D:</b> heavy atoms of CDR1, CDR2, HV4 and CDR3, both chains, Arm B's boxes. <b>Arm E:</b> CDR3 (IMGT 105–117) only, Arm C's full-envelope boxes (no atom truncated: box-cropping check passed).</li></ul>
+  <h2>2 · Unchanged</h2>
+  <p>Per-chain F1 frame and the TCR-intrinsic axes; float16 storage, distances by a float64 blocked Gram; vec2's pairs (seed 0): cut = 1st percentile of 60,000 random receptor pairs — Arm D ${f(D.thr.D.bg_p1, 4)} (B ${f(D.thr.B.bg_p1, 4)}), Arm E ${f(D.thr.E.bg_p1, 4)} (C ${f(D.thr.C.bg_p1, 4)}); complete linkage on the ${NMOL.toLocaleString()} molecules; confound diagnostics; state test: purity against a 200-permutation null ladder (free, within mouse, within mouse + V pair, + CDR3 length class) and a per-cluster one-sided binomial with Benjamini–Hochberg correction, q ≤ 0.15 (Benjamini & Hochberg 1995). Before the arms were tested, the state-test code reproduced the the reference method and Arm B's published results exactly.</p>
+  <h2>3 · Checks</h2>
+  <p>${tot} checks in seven steps, <b>none failed</b>: ${Object.entries(ck).map(([k, v]) => `${k} ${v.n}`).join(" · ")}. They include: typing, mass conservation, analytic distance, fast grid == slow reference, permuted atom identities, Gram == pdist, controls exact, triangle inequality; the crystal-pair recipe at σ 2.0 reproducing the first design's pairs; the validity panel at σ 2.0 reproducing the published panel to 1e-9; confound rows of Arms B and C reproduced to 1e-12. Report gates as the first report (exact split, data == sources, independent recomputation, grids in the page == Python).</p>
+  <h2>4 · Interpretation fixed in advance (A14.3)</h2><ul>
+   <li>Crystal–model error, control pairs within the cut and E4 are reported beside σ 2.0; none was allowed to stop the run.</li>
+   <li>The main readout is the paired validity-panel difference E1(σ 1.5) − E1(σ 2.0).</li>
+   <li>D and E are sensitivity arms. Their state tests are an additional look, corrected within each arm; no arm is called best.</li></ul>
+  <p class="small muted">References: Jiménez J et al. DeepSite. Bioinformatics 2017;33:3036–42 (PMID 28575181). Ragoza M et al. Protein–ligand scoring with convolutional neural networks. J Chem Inf Model 2017;57:942–57 (PMID 28368587). Grant JA, Pickup BT. A Gaussian description of molecular shape. J Phys Chem 1995;99:3503–10 (not indexed in PubMed). Benjamini Y, Hochberg Y. J R Stat Soc B 1995;57:289–300. Rego N, Koes D. 3Dmol.js. Bioinformatics 2015;31:1322–4 (PMID 25505090).</p>`);
+  tcrdMethods(app);
+}
+function viewMethodsExplained(app) {
+  sec(app, `<h1>Methods explained — a sharper picture</h1>
+  <div class="card"><h2 style="margin-top:0">What the blur is</h2><p>To compare receptor shapes, each atom of the loops is drawn as a small fuzzy ball in a 3D grid of 1 Å cubes, and two receptors are compared cube by cube. The size of the fuzz is σ. In the first report σ was 2 Å: each atom spreads over about 12 Å, so the grid sees the overall shape of the loops and their chemistry, but not where exactly each side chain points.</p></div>
+  <div class="card"><h2 style="margin-top:0">What changes here</h2><p>The fuzz is reduced to σ 1.5 Å — as sharp as the 1 Å cubes allow. Everything else is identical, so any difference between Arm D and Arm B (all loops), or between Arm E and Arm C (CDR3 only), is caused by the sharper picture alone.</p></div>
+  <div class="card"><h2 style="margin-top:0">The trade-off</h2><p>A sharper picture sees finer detail, but the structures are computer predictions, and small errors in the predicted side-chain positions are no longer smoothed away. So we expected the prediction of a receptor to look less like its crystal structure (more noise), and asked on the crystal benchmark whether the extra detail is real structure or mostly noise.</p></div>`);
+}

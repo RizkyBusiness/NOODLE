@@ -1,0 +1,10 @@
+config/voxel_config.json
+__pycache__/
+*.pyc
+*.npy
+*.npz
+*.html
+report_data/
+.DS_Store
+!pipeline/report/template/
+!pipeline/report/template/*.html

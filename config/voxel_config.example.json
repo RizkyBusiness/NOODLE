@@ -1,0 +1,100 @@
+{
+  "_comment": "Copy to config/voxel_config.json and edit. Relative paths are relative to project_root; a value starting with @pkg/ is relative to this package (code and templates that ship with it). Each key is a logical path prefix used in the code; its value is where that data lives on your machine. The layout below is the one scripts/run_upstream.py writes.",
+  "project_root": "/path/to/your/project",
+  "reference_receptor": "<receptor id every chain is fitted onto, e.g. the medoid of your repertoire>",
+  "paths": {
+    "voxel_out/": "voxel_out/",
+    "structures/": "structures/",
+    "landmarks/": "landmarks/",
+    "landmarks/code/": "@pkg/pipeline/code/",
+    "frame/": "frame/",
+    "descriptors/": "descriptors/",
+    "tables/": "tables/",
+    "benchmark/": "tables/benchmark/",
+    "reference/": "reference/",
+    "template/": "@pkg/pipeline/report/template/"
+  },
+  "envs": {
+    "main": "/path/to/env/bin/python",
+    "tcrdist3": "/path/to/tcrdist3-env/bin/python",
+    "stcrpy": "/path/to/stcrpy-env/bin/python",
+    "tcr-fold": "/path/to/tcr-fold-env/bin/python",
+    "sc-gex": "/path/to/sc-gex-env/bin/python",
+    "analysis": "/path/to/analysis-env/bin/python"
+  },
+  "upstream": {
+    "_comment": "scripts/run_upstream.py and pipeline/code/paths.py: the data-set config (relative to this package), the input root (read-only inputs / earlier outputs) and the write root (this run's outputs, read first); empty root = project_root. prefix_aliases {package path prefix: path under the input root} redirect input-root reads, longest prefix first (e.g. to read an existing project with a different layout).",
+    "dataset_config": "config/upstream_gse298371.json",
+    "input_root": "",
+    "write_root": "",
+    "prefix_aliases": {}
+  },
+  "report": {
+    "dataset_label": "your data set (e.g. GEO accession, tissue, cell type)",
+    "brand_note": "internal",
+    "condition_labels": [
+      "label when the cells flag is true",
+      "label when it is false"
+    ],
+    "worked_example": [
+      "<receptor id A>",
+      "<receptor id B>"
+    ],
+    "flag_condition": "<raw condition value shown as the flagged group (e.g. GF)>"
+  },
+  "expected": {
+    "_comment": "Dataset-specific expected values the checks compare against (tolerances stay in the code). A key left unset, or still holding its placeholder, fails every check that uses it. n_structures: folded models (rows of the landmark file, PDBs); n_molecules: distinct V-domain protein sequences (one representative each); reference_receptor_index: row of reference_receptor in the landmark file; n_anchors (_alpha, _beta): framework anchors in the landmark file; n_control_pairs: near-identical control pairs; n_background_pairs / n_within_class_pairs: pairs left of the 60,000 random / 40,000 within-length-class draws (default_rng(0)) after dropping self-pairs; n_benchmark_pairs: accepted crystal-model pairs; n_benchmark_models: their distinct models; reference_cut_vc_ori_w050: the reference method's background cut, reproduced by VXH3 (to 5e-5); reference_perchain_fit_alpha_A / _beta_A: the reference method's median per-chain five-landmark fit RMSD, reproduced by VX1 (to 0.01 A). Upstream gates (pipeline/code/paths.py expected()): reference_lam_vc_ori_w050 / reference_lam_ori_vc_ori_w050: lam and lam_o of the N = 10 reference arm vc_ori_w050, reference_observed_purity_vc_ori_w050 / reference_excess_mouse_V_vc_ori_w050 / reference_z_mouse_V_vc_ori_w050: its observed purity and its excess and z within mouse + V pair (as rounded in V2_arm_comparison_vc_ori_w050.csv), reference_n_survivors_vc_ori_w050: its clusters at q <= 0.15, all reproduced by the arc30 gate G4 (a30_g4_check, with reference_cut_vc_ori_w050); reference_orientation_weight_N10: the orientation weight vec6 chose (V6_chosen_weight.json), reproduced by gate G2 (a30_2 N = 10) and read by a30_5; reference_robust_members_N10: one member clone_id per robust N = 10 cluster of an earlier record, whose recovery a30_5 reports (A5_n10_robust8_recovery.csv; context only: unset, the table has no rows); a30_1 / a30_2 also check n_control_pairs, n_background_pairs and n_benchmark_pairs.",
+    "n_structures": "<set for your data>",
+    "n_molecules": "<set for your data>",
+    "reference_receptor_index": "<set for your data>",
+    "n_anchors": "<set for your data>",
+    "n_anchors_alpha": "<set for your data>",
+    "n_anchors_beta": "<set for your data>",
+    "n_control_pairs": "<set for your data>",
+    "n_background_pairs": "<set for your data>",
+    "n_within_class_pairs": "<set for your data>",
+    "n_benchmark_pairs": "<set for your data>",
+    "n_benchmark_models": "<set for your data>",
+    "reference_cut_vc_ori_w050": "<set for your data>",
+    "reference_perchain_fit_alpha_A": "<set for your data>",
+    "reference_perchain_fit_beta_A": "<set for your data>",
+    "reference_lam_vc_ori_w050": "<set for your data>",
+    "reference_lam_ori_vc_ori_w050": "<set for your data>",
+    "reference_observed_purity_vc_ori_w050": "<set for your data>",
+    "reference_excess_mouse_V_vc_ori_w050": "<set for your data>",
+    "reference_z_mouse_V_vc_ori_w050": "<set for your data>",
+    "reference_n_survivors_vc_ori_w050": "<set for your data>",
+    "reference_orientation_weight_N10": "<set for your data>",
+    "reference_robust_members_N10": "<set for your data>"
+  },
+  "documented_failures": {
+    "_comment": "checks step -> list of check-name prefixes you have recorded as expected outcomes in your design; only these can be passed with --accept-documented"
+  },
+  "reference_method": {
+    "_comment": "The established method compared against: the shipped arc30 method (pipeline/code/a30_*.py), written by run_upstream.py stage V30. Leave the block out to skip the comparison, the overlap sets and the reference row.",
+    "name": "arc30",
+    "dir": "reference/arc30/out/",
+    "labels": "V2_molecule_labels_a30_vc_ori_w050.csv.gz",
+    "label_column": "prop_a30_vc_ori_w050",
+    "cluster_tests": "V2_cluster_tests_a30_vc_ori_w050.csv",
+    "arm_comparison": "V2_arm_comparison_a30_vc_ori_w050.csv",
+    "survivor_sets": {
+      "survivors": "A5_survivors.csv",
+      "secondary": "A5_n10_robust8_recovery.csv",
+      "summary": "A5_summary.csv"
+    },
+    "n10_labels": "reference/out/V2_molecule_labels_vc_ori_w050.csv.gz",
+    "n10_column": "prop_vc_ori_w050",
+    "n10_name": "vector method (N = 10)",
+    "n10_thresholds": "reference/out/V2_thresholds_vc_ori_w050.csv",
+    "n10_thresholds_alt": "reference/out/V2_thresholds_vc_ori.csv",
+    "n10_cluster_tests": "reference/out/V2_cluster_tests_vc_ori_w050.csv",
+    "n10_arm_comparison": "reference/out/V2_arm_comparison_vc_ori_w050.csv"
+  },
+  "stale_markers": [
+    "PRIM]",
+    "Robustness"
+  ],
+  "keep_grids": false,
+  "_keep_grids_comment": "false: scripts/run_pipeline.py deletes each full-repertoire grid after its last reader (peak scratch ~60 GB instead of ~180 GB)"
+}

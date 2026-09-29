@@ -1,0 +1,14 @@
+# Voxel pipeline and report (scripts/run_pipeline.py env "main"); also usable as the upstream "analysis" env.
+# Versions of the environment that ran the voxel pipeline. The report gates also need Node.js (node --check, gate RG4).
+name: voxel-main
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - numpy==2.2.6
+      - pandas==2.3.3
+      - scipy==1.15.3
+      - biopython==1.87
+      - freesasa==2.2.1
