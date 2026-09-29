@@ -12,6 +12,8 @@ voxel descriptor itself. It ships as a **Claude skill** (`SKILL.md` plus `refere
 method correctly) and as a **plain pipeline** you can run from the command line. No data, models, weights or results are
 included.
 
+All code and packaging was written by Claude Opus5 & 5.5. 
+
 ## What it does
 
 **Upstream** (`scripts/run_upstream.py`, details in `references/upstream.md`): fetch the GEO files and the TCRBuilder2+
