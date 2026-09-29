@@ -1,6 +1,6 @@
 # NOODLE — Neighbourhoods Of Oriented Domain Loop Ensembles
 
-A voxel-grid descriptor of T-cell receptor structure
+A voxel-grid descriptor of T-cell receptor predicted structure
 
 Compare predicted αβ T-cell receptor structures as 3D grids of occupancy and chemistry, cluster them, test the clusters
 against per-cell labels (for example transcriptional state), cross-check them against sequence similarity (tcrdist3), and
