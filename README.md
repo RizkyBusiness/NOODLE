@@ -14,6 +14,81 @@ included.
 
 All code and packaging was written by Claude Opus5 & 5.5. 
 
+## Pipeline at a glance
+
+<!-- flowchart:start -->
+```mermaid
+flowchart LR
+  S_in_geo(["GEO deposit GSE298371"])
+  S_in_weights(["TCRBuilder2+ weights"])
+  S_in_rcsb(["RCSB PDB"])
+  subgraph UP["Upstream: scripts/run_upstream.py"]
+    direction LR
+    S_0["0 · fetch"]
+    S_A["A · cells"]
+    S_B["B · receptors and folding"]
+    S_Bc["Bc · crystal benchmark"]
+    S_C["C · states, UMAP, identity"]
+    S_D["D · structure features"]
+    S_V["V · vector method"]
+    S_V30["V30 · reference method arc30"]
+    S_R["R · report support tables"]
+    S_set_ref{{"set reference_receptor"}}
+    S_set_exp{{"fill in the expected block"}}
+  end
+  subgraph VX["Voxel pipeline: scripts/run_pipeline.py"]
+    direction LR
+    S_audit["audit"]
+    S_design1["design1"]
+    S_validity["validity"]
+    S_hinge["hinge"]
+    S_armB["armB"]
+    S_armC["armC"]
+    S_labels["labels"]
+    S_sigma2["sigma2"]
+    S_sequence["sequence"]
+    S_report["report"]
+    S_gates["gates"]
+  end
+  S_in_geo --> S_0
+  S_in_weights --> S_0
+  S_in_rcsb --> S_Bc
+  S_0 --> S_A
+  S_A --> S_B
+  S_B --> S_Bc
+  S_B --> S_C
+  S_Bc --> S_D
+  S_C --> S_V
+  S_D --> S_set_ref
+  S_set_ref --> S_V
+  S_V --> S_set_exp
+  S_V --> S_R
+  S_set_exp --> S_V30
+  S_set_exp --> S_audit
+  S_set_exp --> S_design1
+  S_V30 --> S_labels
+  S_R --> S_audit
+  S_R --> S_armC
+  S_audit --> S_report
+  S_design1 --> S_validity
+  S_design1 --> S_armB
+  S_validity --> S_hinge
+  S_validity --> S_armC
+  S_hinge --> S_report
+  S_armB --> S_armC
+  S_armC --> S_labels
+  S_labels --> S_sigma2
+  S_sigma2 --> S_sequence
+  S_sequence --> S_report
+  S_report --> S_gates
+```
+
+The interactive version, with every step, its script, environment, inputs, outputs and the command to run it alone: [`docs/flowchart.html`](docs/flowchart.html) (open the file locally; it needs no network). Both are generated from the runners and the step scripts; regenerate them after changing a runner.
+<!-- flowchart:end -->
+
+
+
+
 ## What it does
 
 **Upstream** (`scripts/run_upstream.py`, details in `references/upstream.md`): fetch the GEO files and the TCRBuilder2+
