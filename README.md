@@ -87,7 +87,9 @@ The interactive version, with every step, its script, environment, inputs, outpu
 <!-- flowchart:end -->
 
 
+### Example report 
 
+Analysed GEO dataset GSE298371 docs/example_report.html
 
 ## What it does
 
