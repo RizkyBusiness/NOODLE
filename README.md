@@ -89,7 +89,7 @@ The interactive version, with every step, its script, environment, inputs, outpu
 
 ### Example report 
 
-Analysed GEO dataset GSE298371 docs/example_report.html
+Analysed GEO dataset GSE298371 under releases.
 
 ## What it does
 
