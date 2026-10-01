@@ -233,7 +233,11 @@ extend the method.
 
 ## Citation and third-party components
 
-If you use this, please cite the data set above and the methods it builds on — see the reference lists in
+If you use NOODLE, or results produced with it, please cite:
+
+> Rizk, J. (2026). *NOODLE: a voxel-grid descriptor of T-cell receptor predicted structure* (version 1.0) [Computer software]. https://github.com/RizkyBusiness/NOODLE
+
+Also please cite  the methods it builds on — see the reference lists in
 `references/upstream.md` (HTODemux, Scanpy, Harmony, Leiden, UMAP, ANARCI, IMGT, ImmuneBuilder / TCRBuilder2+, OpenMM,
 Kabsch, Benjamini–Hochberg) and `references/method.md` (voxelised pharmacophore channels, BLOSUM62, adjusted Rand index,
 TCRdist and tcrdist3, 3Dmol.js).
